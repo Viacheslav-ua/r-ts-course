@@ -7,12 +7,11 @@ interface UserListProps {
 }
  
 const UserList: FC<UserListProps> = ({users}) => {
-
-users[0].address.city
-
+  
+  if (users.length === 0) return <div>not data</div>
   return (
     <div>
-      {users.map(user => 
+      {users && users.map(user => 
         <div key={user.id}>
           <UserItem user={user} />
         </div>

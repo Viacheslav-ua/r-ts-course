@@ -1,11 +1,27 @@
-import { log } from "console";
 import Card, { CardVariant } from "./components/Card/Card";
 import UserList from "./components/Userlist/Userlist";
 import { IUser } from "./types/types";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function App() {
 
-const users: IUser[] = []
+  const [users, setUsers] = useState<IUser[]>([])
+
+  useEffect(() => {
+    fetchUsers()
+
+  }, [])
+
+  async function fetchUsers() {
+    try {
+      const response = await axios.get<IUser[]>('https://jsonplaceholder.typicode.com/users')
+      setUsers(response?.data)
+    } catch (error) {
+      alert(error)
+    }
+  }
+  
 
   return (
     <div >
