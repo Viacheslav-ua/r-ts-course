@@ -1,15 +1,20 @@
 import Card, { CardVariant } from "./components/Card/Card";
 import UserList from "./components/Userlist/Userlist";
-import { IUser } from "./types/types";
+import { ITodo, IUser } from "./types/types";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import List from "./components/List/List";
+import UserItem from "./components/UserItem/UserItem";
+import TodoItem from "./components/TodoItem/TodoItem";
 
 function App() {
 
   const [users, setUsers] = useState<IUser[]>([])
+  const [todos, setTodos] = useState<ITodo[]>([])
 
   useEffect(() => {
     fetchUsers()
+    fetchTodos()
 
   }, [])
 
@@ -17,6 +22,15 @@ function App() {
     try {
       const response = await axios.get<IUser[]>('https://jsonplaceholder.typicode.com/users')
       setUsers(response?.data)
+    } catch (error) {
+      alert(error)
+    }
+  }
+
+  async function fetchTodos() {
+    try {
+      const response = await axios.get<ITodo[]>('https://jsonplaceholder.typicode.com/todos?_limit=10')
+      setTodos(response?.data)
     } catch (error) {
       alert(error)
     }
@@ -35,7 +49,9 @@ function App() {
         <button>btn</button>
       </Card>
 
-      <UserList users={users} />
+      <List items={users} renderItem={(user: IUser) => <UserItem user={user} key={user.id} />} />
+      <hr style={{margin: 15, color: 'blue'}}/>
+      <List items={todos} renderItem={(todo: ITodo) => <TodoItem todo={todo} key={todo.id} />} />
     </div>
   );
 }
