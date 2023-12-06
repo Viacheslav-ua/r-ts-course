@@ -6,6 +6,7 @@ import axios from "axios";
 import List from "./components/List/List";
 import UserItem from "./components/UserItem/UserItem";
 import TodoItem from "./components/TodoItem/TodoItem";
+import EventsExample from "./components/EventsExample/EventsExample";
 
 function App() {
 
@@ -48,6 +49,8 @@ function App() {
       >
         <button>btn</button>
       </Card>
+
+      <EventsExample />
 
       <List items={users} renderItem={(user: IUser) => <UserItem user={user} key={user.id} />} />
       <hr style={{margin: 15, color: 'blue'}}/>
