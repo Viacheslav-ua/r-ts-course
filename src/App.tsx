@@ -1,61 +1,28 @@
-import Card, { CardVariant } from "./components/Card/Card";
-import UserList from "./components/Userlist/Userlist";
-import { ITodo, IUser } from "./types/types";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import List from "./components/List/List";
-import UserItem from "./components/UserItem/UserItem";
-import TodoItem from "./components/TodoItem/TodoItem";
-import EventsExample from "./components/EventsExample/EventsExample";
+import {BrowserRouter, Route, Routes, NavLink} from 'react-router-dom'
+import ExamplesPage from "./components/ExamplesPage";
+import TodosPage from "./components/TodosPage";
+import UsersPage from "./components/UsersPage";
+import UserItemPage from "./components/UserItemPage";
+import TodoItemPage from "./components/TodoItemPage";
 
 function App() {
-
-  const [users, setUsers] = useState<IUser[]>([])
-  const [todos, setTodos] = useState<ITodo[]>([])
-
-  useEffect(() => {
-    fetchUsers()
-    fetchTodos()
-
-  }, [])
-
-  async function fetchUsers() {
-    try {
-      const response = await axios.get<IUser[]>('https://jsonplaceholder.typicode.com/users')
-      setUsers(response?.data)
-    } catch (error) {
-      alert(error)
-    }
-  }
-
-  async function fetchTodos() {
-    try {
-      const response = await axios.get<ITodo[]>('https://jsonplaceholder.typicode.com/todos?_limit=10')
-      setTodos(response?.data)
-    } catch (error) {
-      alert(error)
-    }
-  }
-  
+ 
 
   return (
-    <div >
-      <h1>WORK</h1>
-      <Card 
-        height='200px' 
-        width='300px' 
-        variant={CardVariant.primary}
-        onClick={(num) => console.log(num)}
-      >
-        <button>btn</button>
-      </Card>
-
-      <EventsExample />
-
-      <List items={users} renderItem={(user: IUser) => <UserItem user={user} key={user.id} />} />
-      <hr style={{margin: 15, color: 'blue'}}/>
-      <List items={todos} renderItem={(todo: ITodo) => <TodoItem todo={todo} key={todo.id} />} />
-    </div>
+    <BrowserRouter>
+      <div style={{fontSize: 20}}>
+        <NavLink to={'/examples'} style={{marginRight: 40}}>Examples</NavLink>
+        <NavLink to={'/todos'} style={{marginRight: 40}}>Todos</NavLink>
+        <NavLink to={'/users'}>Users</NavLink>
+      </div>
+      <Routes>
+        <Route path="/examples" element={<ExamplesPage />} />
+        <Route path="/todos" element={<TodosPage />} />
+        <Route path="/users" element={<UsersPage />} />
+        <Route path="/users/:id" element={<UserItemPage />} />
+        <Route path="/todos/:id" element={<TodoItemPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
